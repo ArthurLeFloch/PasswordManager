@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/nav_password_manager"
+        android:title="Comptes"
+        android:icon="@drawable/accounts_selector" />
+    <item
+        android:checkable="false"
+        android:id="@+id/nav_security_dashboard"
+        android:title="Sécurité"
+        android:icon="@drawable/dashboard_selector" />
+    <item
+        android:id="@+id/nav_user_settings"
+        android:title="Paramètres"
+        android:icon="@drawable/settings_selector" />
+</menu>

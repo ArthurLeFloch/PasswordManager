@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Password Manager</string>
+    <string name="app_version">Password Manager v1.0.0</string>
+</resources>
