@@ -113,7 +113,7 @@
         android:layout_marginEnd="8dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:stepSize="4"
+        android:stepSize="1"
         android:valueFrom="8"
         android:valueTo="32"
         app:layout_constraintEnd_toStartOf="@+id/generate_password"
@@ -122,8 +122,8 @@
 
     <Button
         android:id="@+id/generate_password"
-        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-        android:layout_width="0dp"
+        style="@style/Widget.Material3.Button.ElevatedButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="Générer"
@@ -149,4 +149,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/password_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/password_input" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

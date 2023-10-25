@@ -1,24 +1,25 @@
 package com.alf.passwordmanagerv2
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
-import com.alf.passwordmanagerv2.databinding.ActivityChangeAccountPasswordBinding
-import com.alf.passwordmanagerv2.stats.searchPassword
+import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
+import com.alf.passwordmanagerv2.databinding.ActivityEditAccountPasswordBinding
+import com.alf.passwordmanagerv2.utils.searchPassword
 import com.google.android.material.slider.RangeSlider
 import kotlin.random.Random
 
-class ChangeAccountPassword : AppCompatActivity() {
+class EditAccountPassword : AppCompatActivity() {
 
-    private lateinit var binding: ActivityChangeAccountPasswordBinding
+    private lateinit var binding: ActivityEditAccountPasswordBinding
     private var id: Int = -1
     private lateinit var account: Account
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityChangeAccountPasswordBinding.inflate(layoutInflater)
+        binding = ActivityEditAccountPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -58,6 +59,11 @@ class ChangeAccountPassword : AppCompatActivity() {
         binding.newConfirm.setOnClickListener {
             onValidation()
         }
+
+        binding.newPasswordSlider.values = listOf(
+            PreferenceManager.getDefaultSharedPreferences(this).getInt("default_password_size", 8)
+                .toFloat()
+        )
     }
 
     private fun generatePassword() {
@@ -85,7 +91,7 @@ class ChangeAccountPassword : AppCompatActivity() {
         }
 
         when (password) {
-            account.password -> {
+            account.getPassword() -> {
                 binding.passwordInput.error = "Mot de passe déjà actif !"
             }
 

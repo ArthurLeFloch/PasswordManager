@@ -1,15 +1,15 @@
 package com.alf.passwordmanagerv2
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
+import androidx.appcompat.app.AppCompatActivity
 import com.alf.passwordmanagerv2.databinding.ActivityFirstLogBinding
 import com.alf.passwordmanagerv2.security.MasterPassword
-import com.alf.passwordmanagerv2.stats.searchPassword
+import com.alf.passwordmanagerv2.utils.searchPassword
 
-class FirstLogActivity : AppCompatActivity() {
+class FirstLog : AppCompatActivity() {
     private lateinit var binding: ActivityFirstLogBinding
     private lateinit var path: String
 

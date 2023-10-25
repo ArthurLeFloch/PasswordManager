@@ -1,4 +1,4 @@
-package com.alf.passwordmanagerv2
+package com.alf.passwordmanagerv2.utils
 
 import java.io.File
 import java.text.SimpleDateFormat

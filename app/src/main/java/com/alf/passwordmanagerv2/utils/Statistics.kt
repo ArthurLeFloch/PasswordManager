@@ -1,11 +1,10 @@
-package com.alf.passwordmanagerv2.stats
+package com.alf.passwordmanagerv2.utils
 
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Handler
 import com.alf.passwordmanagerv2.Account
 import com.alf.passwordmanagerv2.User
-import com.alf.passwordmanagerv2.bytesToStr
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.net.URL
 import java.security.MessageDigest

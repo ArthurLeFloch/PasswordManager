@@ -17,7 +17,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alf.passwordmanagerv2.databinding.FragmentManagerBinding
 
-private const val TAGh = "PMTAG"
+private const val TAG = "ManagerFragmentTag"
 
 class ManagerFragment : Fragment() {
 
@@ -41,7 +41,7 @@ class ManagerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = PasswordAdapter(requireContext(), binding.root)
+        binding.recyclerView.adapter = AccountAdapter(requireContext(), binding.root)
 
         binding.confirm.setOnClickListener { addData() }
 
@@ -55,13 +55,13 @@ class ManagerFragment : Fragment() {
 
                 searchMenuItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
                     override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-                        Log.d(TAGh, "Search expanded")
+                        Log.d(TAG, "Search expanded")
                         return true
                     }
 
                     override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-                        Log.d(TAGh, "Search collapsed")
-                        (binding.recyclerView.adapter as PasswordAdapter).removeFilter()
+                        Log.d(TAG, "Search collapsed")
+                        (binding.recyclerView.adapter as AccountAdapter).removeFilter()
                         isFiltered = false
                         return true
                     }
@@ -69,13 +69,12 @@ class ManagerFragment : Fragment() {
 
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        Log.d(TAGh, "Search submitted")
+                        Log.d(TAG, "Search submitted")
                         return true
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        Log.d(TAGh, "Search text changed")
-                        (binding.recyclerView.adapter as PasswordAdapter).addFilter(newText!!)
+                        (binding.recyclerView.adapter as AccountAdapter).addFilter(newText!!)
                         isFiltered = true
                         return true
                     }
@@ -92,12 +91,16 @@ class ManagerFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
+        if (isFiltered) {
+            (binding.recyclerView.adapter as AccountAdapter).removeFilter()
+            isFiltered = false
+        }
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun addData() {
         val intent = Intent(requireContext(), NewAccount::class.java)
         startActivity(intent)
-        Log.d(TAGh, "Add service")
+        Log.d(TAG, "Switching to NewAccount activity")
     }
 }

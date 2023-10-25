@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import com.alf.passwordmanagerv2.databinding.ActivityNewAccountBinding
-import com.alf.passwordmanagerv2.stats.searchPassword
+import com.alf.passwordmanagerv2.utils.searchPassword
 import com.google.android.material.slider.RangeSlider
-import java.io.File
 import kotlin.random.Random
 
 private const val TAG = "NewAccountTag"
@@ -57,6 +57,11 @@ class NewAccount : AppCompatActivity() {
         binding.save.setOnClickListener {
             onValidation()
         }
+
+        binding.passwordSlider.values = listOf(
+            PreferenceManager.getDefaultSharedPreferences(this).getInt("default_password_size", 8)
+                .toFloat()
+        )
     }
 
     private fun generatePassword() {
@@ -74,47 +79,35 @@ class NewAccount : AppCompatActivity() {
         binding.password.setText(password)
     }
 
-    private fun fileName(): String {
-        val service = binding.service.text.toString()
-        val login = binding.login.text.toString()
-        return service.trim() + "_" + login.trim()
-    }
-
     private fun checkForm(): Boolean {
-        if (binding.service.text.toString().trim() == "") {
+        val service = binding.service.text.toString().trim()
+        val login = binding.login.text.toString().trim()
+        val password = binding.password.text.toString().trim()
+
+        if (service == "") {
             binding.service.error = "Entrez un nom de service"
             binding.service.requestFocus()
             return false
         }
-        if (!binding.service.text.toString().matches(Regex("[a-zA-Z0-9 ]+"))) {
-            val nonAcceptedChars = binding.service.text.toString().filter { !it.isLetterOrDigit() }
-            val uniqueNonAcceptedChars = nonAcceptedChars.toSet().joinToString("")
-            binding.service.error = "Caractères non acceptés : $uniqueNonAcceptedChars"
-            binding.service.requestFocus()
-            return false
-        }
-        if (binding.login.text.toString().trim() == "") {
+        if (login == "") {
             binding.login.error = "Entrez un nom d'utilisateur"
             binding.login.requestFocus()
             return false
         }
-        if (!binding.login.text.toString().matches(Regex("[a-zA-Z0-9 ]+"))) {
-            val nonAcceptedChars = binding.login.text.toString().filter { !it.isLetterOrDigit() }
-            val uniqueNonAcceptedChars = nonAcceptedChars.toSet().joinToString("")
-            binding.login.error = "Caractères non acceptés : $uniqueNonAcceptedChars"
-            binding.login.requestFocus()
-            return false
-        }
-        if (binding.password.text.toString().trim() == "") {
+        if (password == "") {
             binding.password.error = "Entrez un mot de passe"
             binding.password.requestFocus()
             return false
         }
-        if (File(this.filesDir.absolutePath + "/storedData/" + fileName()).exists()) {
-            binding.service.error = "Ce compte existe déjà"
-            binding.service.requestFocus()
-            return false
+
+        for (account in User.dataset) {
+            if (account.service == service && account.login == login) {
+                binding.service.error = "Ce compte existe déjà"
+                binding.service.requestFocus()
+                return false
+            }
         }
+
         return true
     }
 

@@ -1,7 +1,10 @@
 package com.alf.passwordmanagerv2
 
+import com.alf.passwordmanagerv2.utils.findField
+import com.alf.passwordmanagerv2.utils.getFields
+import com.alf.passwordmanagerv2.utils.saveFields
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.Assert.*
 import org.junit.rules.TemporaryFolder
 import java.io.File
 
@@ -34,11 +37,11 @@ class FieldsUnitTest {
         val fileName = "test.txt"
         val tmpFolder = createFile("test.txt")
 
-        // Check if file exists and is the only one
-        assertEquals("File does not exist or there are more than one", 1, tmpFolder.listFiles()!!.size)
+        assertEquals(
+            "File does not exist or there are more than one", 1, tmpFolder.listFiles()!!.size
+        )
         assertEquals("File name is not correct", fileName, tmpFolder.listFiles()!!.first().name)
 
-        // Check file content
         val lines = tmpFolder.listFiles()!!.first().readLines()
 
         assertEquals("Amount of lines is not correct", 3, lines.size)

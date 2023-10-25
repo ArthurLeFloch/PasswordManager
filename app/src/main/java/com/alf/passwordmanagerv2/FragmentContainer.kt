@@ -1,8 +1,8 @@
 package com.alf.passwordmanagerv2
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.alf.passwordmanagerv2.databinding.ActivityFragmentContainerBinding
 import java.util.concurrent.Executors

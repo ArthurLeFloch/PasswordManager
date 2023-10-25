@@ -10,8 +10,6 @@ object User {
 
     private lateinit var accountsPath: String
 
-    var theme: Int = -1
-
     fun init(path: String) {
         MasterPassword.setFile("$path/identityFile")
 
@@ -46,12 +44,12 @@ object User {
         }
     }
 
-    fun saveAccounts() {
-        Account.saveAll(dataset)
+    fun changeMasterPassword(password: String) {
+        MasterPassword.updateEncryption(password, dataset)
     }
 
     fun changeAccountPassword(id: Int, newPassword: String) {
-        dataset[id].password = newPassword
+        dataset[id].setPassword(newPassword)
         dataset[id].save()
     }
 

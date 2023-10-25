@@ -1,6 +1,5 @@
 package com.alf.passwordmanagerv2
 
-import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -22,7 +21,7 @@ class SecurityAccountAdapter(
     }
 
     private fun onEdit(position: Int): Boolean {
-        val intent = Intent(context, ChangeAccountPassword::class.java)
+        val intent = Intent(context, EditAccountPassword::class.java)
         intent.putExtra("id", getRealAccountPosition(position))
         context.startActivity(intent)
         return true
@@ -30,20 +29,30 @@ class SecurityAccountAdapter(
 
     private fun onCopy(position: Int) {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        clipboard.setPrimaryClip(ClipData.newPlainText("label", dataset[position].password))
+        clipboard.setPrimaryClip(ClipData.newPlainText("label", dataset[position].getPassword()))
         Snackbar.make(root, "Mot de passe copié !", Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun onView(position: Int) {
+        val intent = Intent(context, ShowPassword::class.java)
+        intent.putExtra("id", getRealAccountPosition(position))
+        context.startActivity(intent)
     }
 
     class ItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val company: TextView = view.findViewById(R.id.service)
         val login: TextView = view.findViewById(R.id.login)
-        val edit: MaterialButton = view.findViewById(R.id.edit)
-        val copy: MaterialButton = view.findViewById(R.id.copy)
         val date: TextView = view.findViewById(R.id.date)
+        val copy: MaterialButton = view.findViewById(R.id.copy)
+        val viewPassword: MaterialButton = view.findViewById(R.id.see)
+        val edit: MaterialButton = view.findViewById(R.id.edit)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        return ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.security_account_layout, parent, false))
+        return ItemViewHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.security_account_layout, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
@@ -58,6 +67,10 @@ class SecurityAccountAdapter(
         }
 
         holder.date.text = dataset[position].getLastEdit()
+
+        holder.viewPassword.setOnClickListener {
+            onView(position)
+        }
     }
 
     override fun getItemCount(): Int {

@@ -1,11 +1,11 @@
 package com.alf.passwordmanagerv2
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.alf.passwordmanagerv2.security.decrypt
 import com.alf.passwordmanagerv2.security.derivedKey
 import com.alf.passwordmanagerv2.security.encrypt
 import org.junit.Assert.*
 import org.junit.Test
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)

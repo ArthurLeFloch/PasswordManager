@@ -1,14 +1,13 @@
-package com.alf.passwordmanagerv2.settings
+package com.alf.passwordmanagerv2
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
-import com.alf.passwordmanagerv2.User
 import com.alf.passwordmanagerv2.databinding.ActivityChangePasswordBinding
 import com.alf.passwordmanagerv2.security.MasterPassword
-import com.alf.passwordmanagerv2.stats.searchPassword
+import com.alf.passwordmanagerv2.utils.searchPassword
 
 
 class ChangePassword : AppCompatActivity() {
@@ -90,8 +89,7 @@ class ChangePassword : AppCompatActivity() {
         fun onResult(result: Boolean) {
             if (result) {
                 // TODO: use progress bar here, new onResult function
-                MasterPassword.set(newPassword)
-                User.saveAccounts()
+                User.changeMasterPassword(newPassword)
                 finish()
             } else {
                 binding.password.requestFocus()
@@ -104,7 +102,8 @@ class ChangePassword : AppCompatActivity() {
                 if (newPassword != "") {
                     searchPassword(this, newPassword, ::onResult)
                 } else {
-                    binding.newPasswordConfirmedInput.error = "Veuillez indiquer le nouveau mot de passe."
+                    binding.newPasswordConfirmedInput.error =
+                        "Veuillez indiquer le nouveau mot de passe."
                     binding.progressBar.visibility = android.view.View.GONE
                 }
             } else {

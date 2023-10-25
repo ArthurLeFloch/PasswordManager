@@ -12,6 +12,15 @@
             app:title="Changer de mot de passe" />
 
         <SeekBarPreference
+            android:max="32"
+            app:defaultValue="16"
+            app:key="default_password_size"
+            app:min="8"
+            app:showSeekBarValue="true"
+            app:summary="Taille par défaut des mots de passe générés"
+            app:title="Taille des mots de passe" />
+
+        <SeekBarPreference
             android:max="365"
             app:defaultValue="90"
             app:key="days_before_password_reminder"
@@ -19,6 +28,15 @@
             app:showSeekBarValue="true"
             app:summary="Nombre de jours avant le rappel de changement de mot de passe"
             app:title="Rappel de sécurité" />
+
+        <SeekBarPreference
+            android:max="16"
+            app:defaultValue="8"
+            app:key="char_per_screen"
+            app:min="4"
+            app:showSeekBarValue="true"
+            app:summary="Nombre de caractères par affichage de partie de mot de passe"
+            app:title="Nombre de caractères" />
 
     </PreferenceCategory>
 

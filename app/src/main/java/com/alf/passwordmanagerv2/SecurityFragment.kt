@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alf.passwordmanagerv2.databinding.FragmentSecurityBinding
-import com.alf.passwordmanagerv2.stats.accountsToChange
+import com.alf.passwordmanagerv2.utils.accountsToChange
 
 class SecurityFragment : Fragment() {
 

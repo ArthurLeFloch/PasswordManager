@@ -7,26 +7,26 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
-import com.alf.passwordmanagerv2.databinding.ActivityMainBinding
+import com.alf.passwordmanagerv2.databinding.ActivityAuthWallBinding
 import com.alf.passwordmanagerv2.security.MasterPassword
 
-private const val TAG = "MainActivityTag"
+private const val TAG = "AuthWallTag"
 
-class MainActivity : AppCompatActivity() {
+class AuthWall : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityAuthWallBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityAuthWallBinding.inflate(layoutInflater)
         setContentView(binding.root)
         title = "Gestionnaire de mots de passe"
 
         User.init(this.filesDir.absolutePath)
 
         if (User.isFirstLog()) {
-            val intent = Intent(this, FirstLogActivity::class.java)
-            Log.d(TAG, "First log")
+            val intent = Intent(this, FirstLog::class.java)
+            Log.d(TAG, "Switching to FirstLog activity")
             startActivity(intent)
         }
 
@@ -48,9 +48,9 @@ class MainActivity : AppCompatActivity() {
         binding.password.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 val triedPassword = binding.password.text.toString()
-                Log.d(TAG, "tried password: $triedPassword")
+                Log.d(TAG, "Trying a new password")
                 if (MasterPassword.isEqual(triedPassword)) {
-                    Log.d(TAG, "Accès autorisé")
+                    Log.d(TAG, "Access granted")
                     binding.password.setText("")
                     MasterPassword.set(triedPassword)
                     val intent = Intent(this, FragmentContainer::class.java)

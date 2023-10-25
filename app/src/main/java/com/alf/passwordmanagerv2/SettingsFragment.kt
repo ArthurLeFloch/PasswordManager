@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.alf.passwordmanagerv2.settings.ChangePassword
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -48,8 +47,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
-        findPreference<Preference?>("small_account_layout")?.setOnPreferenceChangeListener {
-                _, newValue ->
+        findPreference<Preference?>("small_account_layout")?.setOnPreferenceChangeListener { _, newValue ->
             Log.d("Preferences", "Small account layout: $newValue")
             true
         }

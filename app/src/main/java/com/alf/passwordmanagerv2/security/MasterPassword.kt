@@ -1,9 +1,10 @@
 package com.alf.passwordmanagerv2.security
 
-import com.alf.passwordmanagerv2.bytesToStr
-import com.alf.passwordmanagerv2.findField
-import com.alf.passwordmanagerv2.saveFields
-import com.alf.passwordmanagerv2.strToBytes
+import com.alf.passwordmanagerv2.Account
+import com.alf.passwordmanagerv2.utils.bytesToStr
+import com.alf.passwordmanagerv2.utils.findField
+import com.alf.passwordmanagerv2.utils.saveFields
+import com.alf.passwordmanagerv2.utils.strToBytes
 import java.io.File
 import java.security.MessageDigest
 import javax.crypto.spec.SecretKeySpec
@@ -36,6 +37,19 @@ object MasterPassword {
         val hashPair = Pair("Hash", bytesToStr(hash))
         encryptedPassword = encrypt(password, decryptingKey)
         saveFields(listOf(saltPair, hashPair), file!!)
+    }
+
+    fun updateEncryption(newPassword: String, accounts: MutableList<Account>) {
+        val oldEncryptedPassword = encryptedPassword
+        set(newPassword)
+        for (account in accounts) {
+            val tmp = encryptedPassword
+            encryptedPassword = oldEncryptedPassword
+            val password = account.getPassword()
+            encryptedPassword = tmp
+            account.setPassword(password, resetDate = false)
+            account.save()
+        }
     }
 
     fun get(): String {

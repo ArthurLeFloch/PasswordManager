@@ -15,19 +15,23 @@
         android:theme="@style/Theme.Material3.DayNight"
         tools:targetApi="31">
         <activity
+            android:name=".ShowPassword"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false" />
+        <activity
             android:name=".FragmentContainer"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="false" />
         <activity
-            android:name=".ChangeAccountPassword"
+            android:name=".EditAccountPassword"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".settings.ChangePassword"
+            android:name=".ChangePassword"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".FirstLogActivity"
+            android:name=".FirstLog"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -35,7 +39,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".AuthWall"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

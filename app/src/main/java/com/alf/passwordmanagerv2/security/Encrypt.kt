@@ -1,10 +1,10 @@
 package com.alf.passwordmanagerv2.security
 
 import javax.crypto.Cipher
-import javax.crypto.spec.IvParameterSpec
-import javax.crypto.spec.SecretKeySpec
 import javax.crypto.SecretKeyFactory
+import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.PBEKeySpec
+import javax.crypto.spec.SecretKeySpec
 import kotlin.random.Random
 
 private const val ALGORITHM = "AES/GCM/NoPadding"
