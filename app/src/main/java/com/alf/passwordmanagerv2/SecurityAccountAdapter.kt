@@ -13,7 +13,9 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 
 class SecurityAccountAdapter(
-    private val context: Context, private val root: View, private val dataset: MutableList<Account>
+    private val context: Context,
+    private val root: View,
+    private val dataset: MutableList<Account>
 ) : RecyclerView.Adapter<SecurityAccountAdapter.ItemViewHolder>() {
 
     private fun getRealAccountPosition(position: Int): Int {
@@ -29,8 +31,10 @@ class SecurityAccountAdapter(
 
     private fun onCopy(position: Int) {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        clipboard.setPrimaryClip(ClipData.newPlainText("label", dataset[position].getPassword()))
-        Snackbar.make(root, "Mot de passe copié !", Snackbar.LENGTH_SHORT).show()
+        clipboard.setPrimaryClip(ClipData.newPlainText("", dataset[position].getPassword()))
+        Snackbar.make(
+            root, context.getString(R.string.snackbar_password_copied), Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     private fun onView(position: Int) {

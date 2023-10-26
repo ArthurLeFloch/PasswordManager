@@ -24,7 +24,7 @@ class EditAccountPassword : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        title = "Modification du compte"
+        title = getString(R.string.edit_account_title)
 
         id = intent.getIntExtra("id", -1)
         account = User.getAccount(id)
@@ -92,11 +92,11 @@ class EditAccountPassword : AppCompatActivity() {
 
         when (password) {
             account.getPassword() -> {
-                binding.passwordInput.error = "Mot de passe déjà actif !"
+                binding.passwordInput.error = getString(R.string.password_already_used)
             }
 
             "" -> {
-                binding.passwordInput.error = "Veuillez renseigner un mot de passe."
+                binding.passwordInput.error = getString(R.string.ask_write_password)
             }
 
             else -> {

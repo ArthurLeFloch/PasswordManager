@@ -4,12 +4,12 @@
 
     <PreferenceCategory
         app:key="security"
-        app:title="Sécurité">
+        app:title="@string/settings_security">
 
         <Preference
             app:key="change_password"
-            app:summary="Modifier le mot de passe maître"
-            app:title="Changer de mot de passe" />
+            app:summary="@string/settings_change_password_summary"
+            app:title="@string/settings_change_password" />
 
         <SeekBarPreference
             android:max="32"
@@ -17,8 +17,8 @@
             app:key="default_password_size"
             app:min="8"
             app:showSeekBarValue="true"
-            app:summary="Taille par défaut des mots de passe générés"
-            app:title="Taille des mots de passe" />
+            app:summary="@string/settings_default_password_size_summary"
+            app:title="@string/settings_default_password_size" />
 
         <SeekBarPreference
             android:max="365"
@@ -26,8 +26,8 @@
             app:key="days_before_password_reminder"
             app:min="7"
             app:showSeekBarValue="true"
-            app:summary="Nombre de jours avant le rappel de changement de mot de passe"
-            app:title="Rappel de sécurité" />
+            app:summary="@string/settings_day_before_password_reminder_summary"
+            app:title="@string/settings_days_before_password_reminder" />
 
         <SeekBarPreference
             android:max="16"
@@ -35,36 +35,36 @@
             app:key="char_per_screen"
             app:min="4"
             app:showSeekBarValue="true"
-            app:summary="Nombre de caractères par affichage de partie de mot de passe"
-            app:title="Nombre de caractères" />
+            app:summary="@string/settings_char_per_screen_summary"
+            app:title="@string/settings_char_per_screen" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
         app:key="display"
-        app:title="Affichage">
+        app:title="@string/settings_display">
 
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:key="small_account_layout"
-            app:title="Affichage réduit" />
+            app:title="@string/settings_small_account_layout" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
         app:key="others"
-        app:title="Informations">
+        app:title="@string/settings_info">
 
         <Preference
             app:key="feedback"
-            app:summary="Proposer une amélioration ou signaler un bug"
-            app:title="Retour d'expérience" />
+            app:summary="@string/settings_feedback_summary"
+            app:title="@string/settings_feedback" />
 
         <Preference
             app:key="about"
             app:selectable="false"
             app:summary="@string/app_version"
-            app:title="À propos" />
+            app:title="@string/settings_about" />
 
     </PreferenceCategory>
 

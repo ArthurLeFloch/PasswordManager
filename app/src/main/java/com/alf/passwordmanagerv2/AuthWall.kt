@@ -20,9 +20,9 @@ class AuthWall : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthWallBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        title = "Gestionnaire de mots de passe"
+        title = getString(R.string.app_name)
 
-        User.init(this.filesDir.absolutePath)
+        User.init(this, filesDir.absolutePath)
 
         if (User.isFirstLog()) {
             val intent = Intent(this, FirstLog::class.java)
@@ -56,7 +56,7 @@ class AuthWall : AppCompatActivity() {
                     val intent = Intent(this, FragmentContainer::class.java)
                     startActivity(intent)
                 } else {
-                    binding.passwordInput.error = "Mot de passe saisi incorrect."
+                    binding.passwordInput.error = getString(R.string.wrong_password)
                 }
                 true
             } else false

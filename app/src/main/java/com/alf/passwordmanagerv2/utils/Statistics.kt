@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Handler
 import com.alf.passwordmanagerv2.Account
+import com.alf.passwordmanagerv2.R
 import com.alf.passwordmanagerv2.User
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.net.URL
@@ -71,11 +72,11 @@ fun searchPassword(context: Context, password: String, onResult: (Boolean) -> Un
             handler.post {
                 if (count > 0) {
                     val formattedCount = String.format("%,d", count)
-                    MaterialAlertDialogBuilder(context).setTitle("Alerte de sécurité")
-                        .setMessage("Le mot de passe choisi a déjà été trouvé $formattedCount fois.\nVoulez-vous vraiment l'utiliser ?")
-                        .setPositiveButton("Oui") { _: DialogInterface, _: Int ->
+                    MaterialAlertDialogBuilder(context).setTitle(context.getString(R.string.alert_security))
+                        .setMessage(String.format(context.getString(R.string.password_already_found_text_info), formattedCount))
+                        .setPositiveButton(context.getString(R.string.yes)) { _: DialogInterface, _: Int ->
                             onResult(true)
-                        }.setNegativeButton("Non") { _: DialogInterface, _: Int ->
+                        }.setNegativeButton(context.getString(R.string.no)) { _: DialogInterface, _: Int ->
                             onResult(false)
                         }.show()
                 } else {
@@ -84,11 +85,11 @@ fun searchPassword(context: Context, password: String, onResult: (Boolean) -> Un
             }
         } catch (e: Exception) {
             handler.post {
-                MaterialAlertDialogBuilder(context).setTitle("Pas de connexion internet")
-                    .setMessage("Le mot de passe choisi n'a pas pu être vérifié car vous n'êtes pas connecté à internet.\nVoulez-vous vraiment l'utiliser ?")
-                    .setPositiveButton("Oui") { _: DialogInterface, _: Int ->
+                MaterialAlertDialogBuilder(context).setTitle(context.getString(R.string.no_internet))
+                    .setMessage(context.getString(R.string.password_not_checked))
+                    .setPositiveButton(context.getString(R.string.yes)) { _: DialogInterface, _: Int ->
                         onResult(true)
-                    }.setNegativeButton("Non") { _: DialogInterface, _: Int ->
+                    }.setNegativeButton(context.getString(R.string.no)) { _: DialogInterface, _: Int ->
                         onResult(false)
                     }.show()
             }

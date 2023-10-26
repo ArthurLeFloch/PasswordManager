@@ -21,7 +21,7 @@ class ChangePassword : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        title = "Changement de mot de passe"
+        title = getString(R.string.change_password_title)
 
         binding.password.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -102,16 +102,15 @@ class ChangePassword : AppCompatActivity() {
                 if (newPassword != "") {
                     searchPassword(this, newPassword, ::onResult)
                 } else {
-                    binding.newPasswordConfirmedInput.error =
-                        "Veuillez indiquer le nouveau mot de passe."
+                    binding.newPasswordConfirmedInput.error = getString(R.string.rewrite_password)
                     binding.progressBar.visibility = android.view.View.GONE
                 }
             } else {
-                binding.newPasswordConfirmedInput.error = "Les mots de passe sont différents !"
+                binding.newPasswordConfirmedInput.error = getString(R.string.passwords_different)
                 binding.progressBar.visibility = android.view.View.GONE
             }
         } else {
-            binding.passwordInput.error = "Mot de passe saisi incorrect."
+            binding.passwordInput.error = getString(R.string.wrong_password)
             binding.progressBar.visibility = android.view.View.GONE
         }
     }

@@ -7,10 +7,8 @@ import com.alf.passwordmanagerv2.utils.generateUniqueName
 import com.alf.passwordmanagerv2.utils.saveFields
 import com.alf.passwordmanagerv2.utils.strToBytes
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.Date
 
-private val dateFormat = SimpleDateFormat("dd/M/yyyy HH:mm:ss")
 
 class Account(
     private val path: String,
@@ -27,7 +25,7 @@ class Account(
             val login = findField("Login", filePath)!!
             val passwordSalt = strToBytes(findField("Salt", filePath)!!)
             val encryptedPassword = strToBytes(findField("Hash", filePath)!!)
-            val date = dateFormat.parse(findField("Date", filePath)!!)!!
+            val date = User.dateFormat.parse(findField("Date", filePath)!!)!!
 
             return Account(filePath, service, login, encryptedPassword, passwordSalt, date)
         }
@@ -43,7 +41,7 @@ class Account(
     fun save() {
         val saltString = bytesToStr(passwordSalt)
         val passwordString = bytesToStr(encryptedPassword)
-        val dateString = dateFormat.format(date)
+        val dateString = User.dateFormat.format(date)
 
         val servicePair = Pair("Service", service)
         val loginPair = Pair("Login", login)
@@ -55,7 +53,7 @@ class Account(
     }
 
     fun getLastEdit(): String {
-        return dateFormat.format(date)
+        return User.dateFormat.format(date)
     }
 
     fun setPassword(password: String, resetDate: Boolean = true) {

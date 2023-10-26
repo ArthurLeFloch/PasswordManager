@@ -31,7 +31,7 @@
             android:layout_margin="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="Ajouter"
+            android:text="@string/manager_add_account"
             android:textSize="16sp"
             android:textStyle="bold"
             app:icon="@drawable/round_add_24"

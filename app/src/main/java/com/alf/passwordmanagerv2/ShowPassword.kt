@@ -16,7 +16,7 @@ class ShowPassword : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        title = "Mot de passe"
+        title = getString(R.string.password)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -75,10 +75,10 @@ class ShowPassword : AppCompatActivity() {
     private fun updateButtons() {
         if (currentIndex == viewAmount() - 1) {
             binding.nextPart.setIconResource(R.drawable.round_done_24)
-            binding.nextPart.text = "Fermer"
+            binding.nextPart.text = getString(R.string.close)
         } else {
             binding.nextPart.setIconResource(R.drawable.round_arrow_forward_24)
-            binding.nextPart.text = "Suivant"
+            binding.nextPart.text = getString(R.string.next)
         }
 
         if (currentIndex == 0) {

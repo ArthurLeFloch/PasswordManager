@@ -18,7 +18,7 @@ class FirstLog : AppCompatActivity() {
         binding = ActivityFirstLogBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        title = "Gestionnaire de mots de passe"
+        title = getString(R.string.app_name)
 
         path = this.filesDir.absolutePath + "/storedData"
         binding.password.setOnClickListener { binding.passwordConfirmedInput.error = null }
@@ -55,8 +55,8 @@ class FirstLog : AppCompatActivity() {
     }
 
     private fun saveMasterKey() {
-        val password1 = binding.password.text.toString()
-        val password2 = binding.passwordConfirmed.text.toString()
+        val password1 = binding.password.text.toString().trim()
+        val password2 = binding.passwordConfirmed.text.toString().trim()
 
         fun onResult(result: Boolean) {
             if (result) {
@@ -68,11 +68,14 @@ class FirstLog : AppCompatActivity() {
                 binding.password.requestFocus()
             }
         }
-
         if (password1 == password2) {
-            searchPassword(this, password1, ::onResult)
+            if (password1 == "") {
+                binding.passwordConfirmedInput.error = getString(R.string.password_cant_be_empty)
+            } else {
+                searchPassword(this, password1, ::onResult)
+            }
         } else {
-            binding.passwordConfirmedInput.error = "Les mots de passe sont différents !"
+            binding.passwordConfirmedInput.error = getString(R.string.passwords_different)
         }
     }
 }

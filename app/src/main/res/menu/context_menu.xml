@@ -4,9 +4,9 @@
     <item
         android:id="@+id/action_edit"
         android:icon="@drawable/round_mode_edit_24"
-        android:title="Modifier" />
+        android:title="@string/context_edit" />
     <item
         android:id="@+id/action_delete"
         android:icon="@drawable/round_delete_24"
-        android:title="Supprimer" />
+        android:title="@string/context_delete" />
 </menu>

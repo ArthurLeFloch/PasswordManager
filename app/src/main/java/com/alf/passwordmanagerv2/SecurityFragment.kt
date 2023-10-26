@@ -19,7 +19,7 @@ class SecurityFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.title = "Tableau de bord"
+        activity?.title = getString(R.string.security_title)
     }
 
     override fun onCreateView(

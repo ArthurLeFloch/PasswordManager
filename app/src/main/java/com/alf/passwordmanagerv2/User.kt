@@ -1,16 +1,19 @@
 package com.alf.passwordmanagerv2
 
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import com.alf.passwordmanagerv2.security.MasterPassword
 import java.io.File
+import java.text.SimpleDateFormat
 
 object User {
     val dataset = mutableListOf<Account>()
 
     private lateinit var accountsPath: String
+    lateinit var dateFormat: SimpleDateFormat
 
-    fun init(path: String) {
+    fun init(context: Context, path: String) {
         MasterPassword.setFile("$path/identityFile")
 
         accountsPath = "$path/storedData"
@@ -19,6 +22,8 @@ object User {
         if (!accountsFolder.exists()) {
             accountsFolder.mkdir()
         }
+
+        dateFormat = SimpleDateFormat(context.getString(R.string.datetime_format))
     }
 
     fun isFirstLog(): Boolean {

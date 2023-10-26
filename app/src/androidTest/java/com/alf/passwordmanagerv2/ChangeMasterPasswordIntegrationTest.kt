@@ -1,6 +1,7 @@
 package com.alf.passwordmanagerv2
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.alf.passwordmanagerv2.security.MasterPassword
 import org.junit.Assert.*
 import org.junit.Test
@@ -23,7 +24,7 @@ class ChangeMasterPasswordIntegrationTest {
         val identityFile = File("${folder.absolutePath}/identityFile")
         MasterPassword.setFile(identityFile.absolutePath)
 
-        User.init(folder.absolutePath)
+        User.init(getInstrumentation().targetContext, folder.absolutePath)
 
         MasterPassword.set("password")
 

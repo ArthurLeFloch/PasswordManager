@@ -27,7 +27,7 @@ class ManagerFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.title = "Gestion des comptes"
+        activity?.title = getString(R.string.management_title)
     }
 
     override fun onCreateView(
@@ -51,7 +51,7 @@ class ManagerFragment : Fragment() {
 
                 val searchMenuItem = menu.findItem(R.id.action_search)
                 val searchView = searchMenuItem.actionView as SearchView
-                searchView.queryHint = "Rechercher..."
+                searchView.queryHint = getString(R.string.search_hint)
 
                 searchMenuItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
                     override fun onMenuItemActionExpand(item: MenuItem): Boolean {

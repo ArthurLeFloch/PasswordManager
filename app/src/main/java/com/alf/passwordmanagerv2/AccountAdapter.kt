@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
@@ -82,8 +81,12 @@ class AccountAdapter(
 
     private fun onCopy(position: Int) {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        clipboard.setPrimaryClip(ClipData.newPlainText("label", getAccount(position).getPassword()))
-        Snackbar.make(root, "Mot de passe copié !", Snackbar.LENGTH_SHORT).show()
+        clipboard.setPrimaryClip(ClipData.newPlainText("", getAccount(position).getPassword()))
+        Snackbar.make(
+            root,
+            context.getString(R.string.snackbar_password_copied),
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     private fun onView(position: Int) {
@@ -93,10 +96,14 @@ class AccountAdapter(
     }
 
     private fun onDelete(position: Int) {
-        MaterialAlertDialogBuilder(context).setTitle("Suppression de données")
-            .setMessage("Voulez-vous vraiment supprimer ces données?")
-            .setPositiveButton("Supprimer") { _: DialogInterface, _: Int ->
-                Toast.makeText(context, "Données supprimées.", Toast.LENGTH_SHORT).show()
+        MaterialAlertDialogBuilder(context).setTitle(context.getString(R.string.dialog_delete_account))
+            .setMessage(context.getString(R.string.dialog_delete_text_info))
+            .setPositiveButton(context.getString(R.string.dialog_delete)) { _: DialogInterface, _: Int ->
+                Snackbar.make(
+                    root,
+                    context.getString(R.string.snackbar_account_deleted),
+                    Snackbar.LENGTH_SHORT
+                ).show()
                 if (isFiltered) {
                     User.removeAccount(getRealAccountPosition(position))
                     removeAccount(position)
@@ -104,7 +111,9 @@ class AccountAdapter(
                     User.removeAccount(position)
                 }
                 updateFrom(position)
-            }.setNegativeButton("Annuler") { _: DialogInterface, _: Int -> }.create().show()
+            }
+            .setNegativeButton(context.getString(R.string.dialog_cancel)) { _: DialogInterface, _: Int -> }
+            .create().show()
     }
 
     class ItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {

@@ -18,7 +18,7 @@ class NewAccount : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        title = "Nouveau compte"
+        title = getString(R.string.new_account_title)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -75,7 +75,6 @@ class NewAccount : AppCompatActivity() {
         for (i in 0 until size) {
             password += allowedChars[Random.nextInt(0, allowedChars.length - 1)]
         }
-        Log.d(TAG, password)
         binding.password.setText(password)
     }
 
@@ -85,24 +84,24 @@ class NewAccount : AppCompatActivity() {
         val password = binding.password.text.toString().trim()
 
         if (service == "") {
-            binding.service.error = "Entrez un nom de service"
+            binding.service.error = getString(R.string.account_service_empty)
             binding.service.requestFocus()
             return false
         }
         if (login == "") {
-            binding.login.error = "Entrez un nom d'utilisateur"
+            binding.login.error = getString(R.string.account_login_empty)
             binding.login.requestFocus()
             return false
         }
         if (password == "") {
-            binding.password.error = "Entrez un mot de passe"
+            binding.password.error = getString(R.string.account_password_empty)
             binding.password.requestFocus()
             return false
         }
 
         for (account in User.dataset) {
             if (account.service == service && account.login == login) {
-                binding.service.error = "Ce compte existe déjà"
+                binding.service.error = getString(R.string.account_already_exists)
                 binding.service.requestFocus()
                 return false
             }
