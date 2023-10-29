@@ -7,6 +7,8 @@ import com.alf.passwordmanagerv2.Account
 import com.alf.passwordmanagerv2.R
 import com.alf.passwordmanagerv2.User
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import java.net.URL
 import java.security.MessageDigest
 import java.util.Date
@@ -18,14 +20,35 @@ private fun sha1(password: String): String {
     return bytesToStr(hash)
 }
 
+// Raises an exception if no internet connection or weak connection
+private fun useCountRequest(prefix: String): List<List<String>> {
+    val url = "https://api.pwnedpasswords.com/range/$prefix"
+    val timeout = 750
+
+    val connection = URL(url).openConnection()
+
+    connection.connectTimeout = timeout
+    connection.readTimeout = timeout
+
+    connection.connect()
+
+    val inputStream = connection.getInputStream()
+    val reader = BufferedReader(InputStreamReader(inputStream))
+    val response = reader.readText()
+
+    reader.close()
+    inputStream.close()
+
+    return response.split("\n").map { it.split(":").map { it.trim() } }
+}
+
 private fun useCount(password: String): Int {
     val passwordHash = sha1(password)
     val prefix = passwordHash.substring(0, 5)
     val suffix = passwordHash.substring(5)
 
-    val url = "https://api.pwnedpasswords.com/range/$prefix"
+    val hashList = useCountRequest(prefix)
 
-    val hashList = URL(url).readText().split("\n").map { it.split(":").map { it.trim() } }
     var left = 0
     var right = hashList.size - 1
 
@@ -44,7 +67,7 @@ private fun useCount(password: String): Int {
     return 0
 }
 
-fun accountsToChange(days: Int = 90): MutableList<Account> {
+fun accountsToChange(days: Int): MutableList<Account> {
     val result = User.dataset.toMutableList()
     var i = 0
     val currentTime = Date().time
@@ -73,13 +96,19 @@ fun searchPassword(context: Context, password: String, onResult: (Boolean) -> Un
                 if (count > 0) {
                     val formattedCount = String.format("%,d", count)
                     MaterialAlertDialogBuilder(context).setTitle(context.getString(R.string.alert_security))
-                        .setMessage(String.format(context.getString(R.string.password_already_found_text_info), formattedCount))
+                        .setMessage(
+                            String.format(
+                                context.getString(R.string.password_already_found_text_info),
+                                formattedCount
+                            )
+                        )
                         .setPositiveButton(context.getString(R.string.yes)) { _: DialogInterface, _: Int ->
                             onResult(true)
-                        }.setNegativeButton(context.getString(R.string.no)) { _: DialogInterface, _: Int ->
+                        }
+                        .setNegativeButton(context.getString(R.string.no)) { _: DialogInterface, _: Int ->
                             onResult(false)
                         }.show()
-                } else {
+                } else if (count == 0) {
                     onResult(true)
                 }
             }
@@ -89,7 +118,8 @@ fun searchPassword(context: Context, password: String, onResult: (Boolean) -> Un
                     .setMessage(context.getString(R.string.password_not_checked))
                     .setPositiveButton(context.getString(R.string.yes)) { _: DialogInterface, _: Int ->
                         onResult(true)
-                    }.setNegativeButton(context.getString(R.string.no)) { _: DialogInterface, _: Int ->
+                    }
+                    .setNegativeButton(context.getString(R.string.no)) { _: DialogInterface, _: Int ->
                         onResult(false)
                     }.show()
             }

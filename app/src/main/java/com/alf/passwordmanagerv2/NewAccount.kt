@@ -128,10 +128,12 @@ class NewAccount : AppCompatActivity() {
                 createAccount()
             } else {
                 binding.password.requestFocus()
+                binding.save.isEnabled = true
             }
         }
 
         if (checkForm()) {
+            binding.save.isEnabled = false
             searchPassword(this, binding.password.text.toString(), ::onResult)
         }
     }

@@ -83,9 +83,7 @@ class AccountAdapter(
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         clipboard.setPrimaryClip(ClipData.newPlainText("", getAccount(position).getPassword()))
         Snackbar.make(
-            root,
-            context.getString(R.string.snackbar_password_copied),
-            Snackbar.LENGTH_SHORT
+            root, context.getString(R.string.snackbar_password_copied), Snackbar.LENGTH_SHORT
         ).show()
     }
 
@@ -152,18 +150,16 @@ class AccountAdapter(
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.company.text = currentDataset[position].service
         holder.login.text = currentDataset[position].login
+        holder.date.text = currentDataset[position].getLastEdit()
 
-        holder.settings.setOnClickListener {
-            showMenu(it, R.menu.context_menu, position)
-        }
         holder.copy.setOnClickListener {
             onCopy(position)
         }
-
-        holder.date.text = currentDataset[position].getLastEdit()
-
         holder.viewPassword.setOnClickListener {
             onView(position)
+        }
+        holder.settings.setOnClickListener {
+            showMenu(it, R.menu.context_menu, position)
         }
     }
 

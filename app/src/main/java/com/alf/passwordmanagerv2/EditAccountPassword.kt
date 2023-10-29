@@ -81,12 +81,14 @@ class EditAccountPassword : AppCompatActivity() {
 
     private fun onValidation() {
         val password = binding.password.text.toString().trim()
+
         fun onResult(result: Boolean) {
             if (result) {
                 User.changeAccountPassword(id, password)
                 finish()
             } else {
                 binding.password.requestFocus()
+                binding.newConfirm.isEnabled = true
             }
         }
 
@@ -100,6 +102,7 @@ class EditAccountPassword : AppCompatActivity() {
             }
 
             else -> {
+                binding.newConfirm.isEnabled = false
                 searchPassword(this, password, ::onResult)
             }
         }

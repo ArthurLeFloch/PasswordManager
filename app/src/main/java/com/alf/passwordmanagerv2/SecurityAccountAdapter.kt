@@ -62,18 +62,16 @@ class SecurityAccountAdapter(
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.company.text = dataset[position].service
         holder.login.text = dataset[position].login
+        holder.date.text = dataset[position].getLastEdit()
 
-        holder.edit.setOnClickListener {
-            onEdit(position)
-        }
         holder.copy.setOnClickListener {
             onCopy(position)
         }
-
-        holder.date.text = dataset[position].getLastEdit()
-
         holder.viewPassword.setOnClickListener {
             onView(position)
+        }
+        holder.edit.setOnClickListener {
+            onEdit(position)
         }
     }
 

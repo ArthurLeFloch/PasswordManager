@@ -74,7 +74,7 @@ class ManagerFragment : Fragment() {
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        (binding.recyclerView.adapter as AccountAdapter).addFilter(newText!!)
+                        (binding.recyclerView.adapter as AccountAdapter).addFilter(newText!!.trim())
                         isFiltered = true
                         return true
                     }
