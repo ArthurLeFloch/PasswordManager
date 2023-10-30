@@ -10,7 +10,7 @@ Android application to securely manage accounts.
 This implementation uses advanced encryption algorithms to store data securely.
 A master password is used to encrypt and decrypt the data, and is not stored anywhere directly.
 
-Each time a new master password is set, a safe web request is made to a server (passwords are not sent directly).
+Each time a new password is set, a safe web request is made to a server (passwords are not sent directly) to check if it was found in a data breach.
 
 ## Languages
 The language is determined by the system language. If the system language is not supported, the default language is used.
