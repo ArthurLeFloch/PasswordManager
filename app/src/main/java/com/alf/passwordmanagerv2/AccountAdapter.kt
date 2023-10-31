@@ -92,9 +92,7 @@ class AccountAdapter(
                     Snackbar.LENGTH_SHORT
                 ).show()
                 accounts[position].delete()
-                if (isFiltered) {
-                    accounts.removeAt(position)
-                }
+                accounts.removeAt(position)
                 updateFrom(position)
             }
             .setNegativeButton(context.getString(R.string.dialog_cancel)) { _: DialogInterface, _: Int -> }
