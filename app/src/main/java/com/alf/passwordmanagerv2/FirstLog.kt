@@ -5,8 +5,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
+import com.alf.passwordmanagerv2.data.Security
 import com.alf.passwordmanagerv2.databinding.ActivityFirstLogBinding
-import com.alf.passwordmanagerv2.security.MasterPassword
 import com.alf.passwordmanagerv2.utils.searchPassword
 
 class FirstLog : AppCompatActivity() {
@@ -60,7 +60,7 @@ class FirstLog : AppCompatActivity() {
 
         fun onResult(result: Boolean) {
             if (result) {
-                MasterPassword.set(password1)
+                Security.setMasterPassword(password1)
                 finish()
             } else {
                 binding.password.setText("")

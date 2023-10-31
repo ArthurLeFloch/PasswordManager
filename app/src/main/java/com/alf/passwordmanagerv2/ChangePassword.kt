@@ -5,8 +5,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
+import com.alf.passwordmanagerv2.data.Security
 import com.alf.passwordmanagerv2.databinding.ActivityChangePasswordBinding
-import com.alf.passwordmanagerv2.security.MasterPassword
 import com.alf.passwordmanagerv2.utils.searchPassword
 
 
@@ -88,8 +88,7 @@ class ChangePassword : AppCompatActivity() {
 
         fun onResult(result: Boolean) {
             if (result) {
-                // TODO: use progress bar here, new onResult function
-                User.changeMasterPassword(newPassword)
+                Security.updateMasterPassword(newPassword)
                 finish()
             } else {
                 binding.password.requestFocus()
@@ -97,7 +96,7 @@ class ChangePassword : AppCompatActivity() {
             }
         }
 
-        if (MasterPassword.isEqual(triedPassword)) {
+        if (Security.isMasterPassword(triedPassword)) {
             if (newPassword == newPasswordConfirmed) {
                 if (newPassword != "") {
                     searchPassword(this, newPassword, ::onResult)

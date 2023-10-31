@@ -6,15 +6,17 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
+import com.alf.passwordmanagerv2.data.Account
+import com.alf.passwordmanagerv2.data.Security
 import com.alf.passwordmanagerv2.databinding.ActivityEditAccountPasswordBinding
+import com.alf.passwordmanagerv2.utils.generatePassword
 import com.alf.passwordmanagerv2.utils.searchPassword
 import com.google.android.material.slider.RangeSlider
-import kotlin.random.Random
 
 class EditAccountPassword : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditAccountPasswordBinding
-    private var id: Int = -1
+    private var path: String? = null
     private lateinit var account: Account
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,8 +28,8 @@ class EditAccountPassword : AppCompatActivity() {
 
         title = getString(R.string.edit_account_title)
 
-        id = intent.getIntExtra("id", -1)
-        account = User.getAccount(id)
+        path = intent.getStringExtra("path")
+        account = Security.getAccount(path!!)
 
         binding.service.text = account.service
         binding.login.text = account.login
@@ -51,10 +53,12 @@ class EditAccountPassword : AppCompatActivity() {
                 true
             } else false
         }
-        binding.newPasswordSlider.addOnChangeListener(RangeSlider.OnChangeListener { _, _, _ -> generatePassword() })
+        binding.newPasswordSlider.addOnChangeListener(RangeSlider.OnChangeListener { _, _, _ ->
+            binding.password.setText(generatePassword(passwordSize()))
+        })
 
         binding.generateNewPassword.setOnClickListener {
-            generatePassword()
+            binding.password.setText(generatePassword(passwordSize()))
         }
         binding.newConfirm.setOnClickListener {
             onValidation()
@@ -66,17 +70,8 @@ class EditAccountPassword : AppCompatActivity() {
         )
     }
 
-    private fun generatePassword() {
-        val size = binding.newPasswordSlider.values[0].toInt()
-        var allowedChars = ""
-        var password = ""
-        for (i in 33 until 127) {
-            allowedChars += i.toChar()
-        }
-        for (i in 0 until size) {
-            password += allowedChars[Random.nextInt(0, allowedChars.length - 1)]
-        }
-        binding.password.setText(password)
+    private fun passwordSize(): Int {
+        return binding.newPasswordSlider.values[0].toInt()
     }
 
     private fun onValidation() {
@@ -84,7 +79,7 @@ class EditAccountPassword : AppCompatActivity() {
 
         fun onResult(result: Boolean) {
             if (result) {
-                User.changeAccountPassword(id, password)
+                Security.changeAccountPassword(account, password)
                 finish()
             } else {
                 binding.password.requestFocus()

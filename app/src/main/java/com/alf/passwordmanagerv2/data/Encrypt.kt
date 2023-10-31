@@ -1,4 +1,4 @@
-package com.alf.passwordmanagerv2.security
+package com.alf.passwordmanagerv2.data
 
 import javax.crypto.Cipher
 import javax.crypto.SecretKeyFactory
@@ -33,8 +33,4 @@ fun decrypt(data: ByteArray, derivedKey: SecretKeySpec): String {
     val cipher = Cipher.getInstance(ALGORITHM)
     cipher.init(Cipher.DECRYPT_MODE, derivedKey, IvParameterSpec(ByteArray(16)))
     return String(cipher.doFinal(data))
-}
-
-fun decrypt(encryptedData: ByteArray, password: String, salt: ByteArray): String {
-    return decrypt(encryptedData, derivedKey(password, salt).first)
 }

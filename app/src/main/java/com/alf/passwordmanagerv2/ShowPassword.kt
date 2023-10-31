@@ -3,6 +3,8 @@ package com.alf.passwordmanagerv2
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
+import com.alf.passwordmanagerv2.data.Account
+import com.alf.passwordmanagerv2.data.Security
 import com.alf.passwordmanagerv2.databinding.ActivityShowPasswordBinding
 
 class ShowPassword : AppCompatActivity() {
@@ -23,8 +25,7 @@ class ShowPassword : AppCompatActivity() {
         binding = ActivityShowPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val id = intent.getIntExtra("id", -1)
-        account = User.getAccount(id)
+        account = Security.getAccount(intent.getStringExtra("path")!!)
 
         binding.service.text = account.service
         binding.login.text = account.login

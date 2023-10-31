@@ -1,7 +1,7 @@
 package com.alf.passwordmanagerv2
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.alf.passwordmanagerv2.security.MasterPassword
+import com.alf.passwordmanagerv2.data.MasterPassword
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -50,13 +50,25 @@ class MasterPasswordUnitTest {
     }
 
     @Test
+    fun isEqual_isCorrect() {
+        val file = createFile()
+        MasterPassword.setFile(file.absolutePath)
+
+        MasterPassword.set(password)
+
+        assertTrue("isEqual() returned false on correct password", MasterPassword.isEqual(password))
+    }
+
+    @Test
     fun get_isCorrect() {
         val file = createFile()
         MasterPassword.setFile(file.absolutePath)
 
         MasterPassword.set(password)
 
-        assertEquals("get() returned a wrong password", password, MasterPassword.get())
+        val method = MasterPassword::class.java.getDeclaredMethod("get")
+        method.isAccessible = true
+        assertEquals("get() returned a wrong password", password, method.invoke(MasterPassword))
     }
 
     @Test

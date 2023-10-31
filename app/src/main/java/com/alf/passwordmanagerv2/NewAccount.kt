@@ -1,14 +1,14 @@
 package com.alf.passwordmanagerv2
 
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
+import com.alf.passwordmanagerv2.data.Security
 import com.alf.passwordmanagerv2.databinding.ActivityNewAccountBinding
+import com.alf.passwordmanagerv2.utils.generatePassword
 import com.alf.passwordmanagerv2.utils.searchPassword
 import com.google.android.material.slider.RangeSlider
-import kotlin.random.Random
 
 private const val TAG = "NewAccountTag"
 
@@ -25,7 +25,7 @@ class NewAccount : AppCompatActivity() {
         binding = ActivityNewAccountBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        generatePassword()
+        binding.password.setText(generatePassword(passwordSize()))
 
         binding.service.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -49,10 +49,12 @@ class NewAccount : AppCompatActivity() {
                 true
             } else false
         }
-        binding.passwordSlider.addOnChangeListener(RangeSlider.OnChangeListener { _, _, _ -> generatePassword() })
+        binding.passwordSlider.addOnChangeListener(RangeSlider.OnChangeListener { _, _, _ ->
+            binding.password.setText(generatePassword(passwordSize()))
+        })
 
         binding.generatePassword.setOnClickListener {
-            generatePassword()
+            binding.password.setText(generatePassword(passwordSize()))
         }
         binding.save.setOnClickListener {
             onValidation()
@@ -64,18 +66,8 @@ class NewAccount : AppCompatActivity() {
         )
     }
 
-    private fun generatePassword() {
-        val size = binding.passwordSlider.values[0].toInt()
-        var allowedChars = ""
-        var password = ""
-        for (i in 33 until 127) {
-            allowedChars += i.toChar()
-        }
-        Log.d(TAG, allowedChars)
-        for (i in 0 until size) {
-            password += allowedChars[Random.nextInt(0, allowedChars.length - 1)]
-        }
-        binding.password.setText(password)
+    private fun passwordSize(): Int {
+        return binding.passwordSlider.values[0].toInt()
     }
 
     private fun checkForm(): Boolean {
@@ -99,7 +91,7 @@ class NewAccount : AppCompatActivity() {
             return false
         }
 
-        for (account in User.dataset) {
+        for (account in Security.getAccounts()) {
             if (account.service == service && account.login == login) {
                 binding.service.error = getString(R.string.account_already_exists)
                 binding.service.requestFocus()
@@ -114,7 +106,7 @@ class NewAccount : AppCompatActivity() {
         val service = binding.service.text.toString()
         val login = binding.login.text.toString()
         val password = binding.password.text.toString()
-        User.createAccount(service, login, password)
+        Security.createAccount(service, login, password)
         finish()
     }
 

@@ -1,6 +1,5 @@
-package com.alf.passwordmanagerv2.security
+package com.alf.passwordmanagerv2.data
 
-import com.alf.passwordmanagerv2.Account
 import com.alf.passwordmanagerv2.utils.bytesToStr
 import com.alf.passwordmanagerv2.utils.findField
 import com.alf.passwordmanagerv2.utils.saveFields
@@ -39,20 +38,24 @@ object MasterPassword {
         saveFields(listOf(saltPair, hashPair), file!!)
     }
 
-    fun updateEncryption(newPassword: String, accounts: MutableList<Account>) {
+    fun updateEncryption(
+        newPassword: String,
+        count: Int,
+        getPassword: (Int) -> String,
+        setPassword: (Int, String) -> Unit
+    ) {
         val oldEncryptedPassword = encryptedPassword
         set(newPassword)
-        for (account in accounts) {
-            val tmp = encryptedPassword
+        val newEncryptedPassword = encryptedPassword
+        for (i in 0 until count) {
             encryptedPassword = oldEncryptedPassword
-            val password = account.getPassword()
-            encryptedPassword = tmp
-            account.setPassword(password, resetDate = false)
-            account.save()
+            val password = getPassword(i)
+            encryptedPassword = newEncryptedPassword
+            setPassword(i, password)
         }
     }
 
-    fun get(): String {
+    private fun get(): String {
         return decrypt(encryptedPassword, decryptingKey)
     }
 

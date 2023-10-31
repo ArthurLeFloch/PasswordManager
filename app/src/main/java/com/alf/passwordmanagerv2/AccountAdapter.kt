@@ -15,6 +15,8 @@ import android.widget.TextView
 import androidx.annotation.MenuRes
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alf.passwordmanagerv2.data.Account
+import com.alf.passwordmanagerv2.data.Security
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -24,47 +26,34 @@ class AccountAdapter(
 ) : RecyclerView.Adapter<AccountAdapter.ItemViewHolder>() {
 
     private var layout: Int = -1
+    private lateinit var accounts: MutableList<Account>
+    private var isFiltered: Boolean = false
 
     init {
         val isSmallLayout = PreferenceManager.getDefaultSharedPreferences(context)
             .getBoolean("small_account_layout", false)
         layout = if (isSmallLayout) R.layout.small_account_layout else R.layout.account_layout
+        reloadDataset()
     }
-
-    private var dataset: MutableList<Account> = User.dataset
-    private var currentDataset: MutableList<Account> = User.dataset
-    private var isFiltered: Boolean = false
 
     @SuppressLint("NotifyDataSetChanged")
     fun addFilter(text: String) {
         val filteredDataset = mutableListOf<Account>()
-        for (account in dataset) {
+        for (account in accounts) {
             if (account.service.contains(text, true) || account.login.contains(text, true)) {
                 filteredDataset.add(account)
             }
         }
-        currentDataset = filteredDataset
+        accounts = filteredDataset
         notifyDataSetChanged()
         isFiltered = true
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun removeFilter() {
-        currentDataset = dataset
+    fun reloadDataset() {
+        accounts = Security.getAccounts().toMutableList()
         notifyDataSetChanged()
         isFiltered = false
-    }
-
-    private fun getAccount(position: Int): Account {
-        return currentDataset[position]
-    }
-
-    private fun getRealAccountPosition(position: Int): Int {
-        return dataset.indexOf(currentDataset[position])
-    }
-
-    private fun removeAccount(position: Int) {
-        currentDataset.removeAt(position)
     }
 
     private fun updateFrom(position: Int) {
@@ -74,14 +63,14 @@ class AccountAdapter(
 
     private fun onEdit(position: Int): Boolean {
         val intent = Intent(context, EditAccountPassword::class.java)
-        intent.putExtra("id", getRealAccountPosition(position))
+        intent.putExtra("path", accounts[position].path)
         context.startActivity(intent)
         return true
     }
 
     private fun onCopy(position: Int) {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        clipboard.setPrimaryClip(ClipData.newPlainText("", getAccount(position).getPassword()))
+        clipboard.setPrimaryClip(ClipData.newPlainText("", accounts[position].getPassword()))
         Snackbar.make(
             root, context.getString(R.string.snackbar_password_copied), Snackbar.LENGTH_SHORT
         ).show()
@@ -89,7 +78,7 @@ class AccountAdapter(
 
     private fun onView(position: Int) {
         val intent = Intent(context, ShowPassword::class.java)
-        intent.putExtra("id", getRealAccountPosition(position))
+        intent.putExtra("path", accounts[position].path)
         context.startActivity(intent)
     }
 
@@ -102,11 +91,9 @@ class AccountAdapter(
                     context.getString(R.string.snackbar_account_deleted),
                     Snackbar.LENGTH_SHORT
                 ).show()
+                accounts[position].delete()
                 if (isFiltered) {
-                    User.removeAccount(getRealAccountPosition(position))
-                    removeAccount(position)
-                } else {
-                    User.removeAccount(position)
+                    accounts.removeAt(position)
                 }
                 updateFrom(position)
             }
@@ -148,9 +135,9 @@ class AccountAdapter(
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.company.text = currentDataset[position].service
-        holder.login.text = currentDataset[position].login
-        holder.date.text = currentDataset[position].getLastEdit()
+        holder.company.text = accounts[position].service
+        holder.login.text = accounts[position].login
+        holder.date.text = accounts[position].getLastEdit()
 
         holder.copy.setOnClickListener {
             onCopy(position)
@@ -164,7 +151,7 @@ class AccountAdapter(
     }
 
     override fun getItemCount(): Int {
-        return currentDataset.size
+        return accounts.size
     }
 
 }

@@ -7,8 +7,8 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
+import com.alf.passwordmanagerv2.data.Security
 import com.alf.passwordmanagerv2.databinding.ActivityAuthWallBinding
-import com.alf.passwordmanagerv2.security.MasterPassword
 
 private const val TAG = "AuthWallTag"
 
@@ -22,9 +22,9 @@ class AuthWall : AppCompatActivity() {
         setContentView(binding.root)
         title = getString(R.string.app_name)
 
-        User.init(this, filesDir.absolutePath)
+        Security.init(this, filesDir.absolutePath)
 
-        if (User.isFirstLog()) {
+        if (Security.isFirstLog()) {
             val intent = Intent(this, FirstLog::class.java)
             Log.d(TAG, "Switching to FirstLog activity")
             startActivity(intent)
@@ -49,10 +49,10 @@ class AuthWall : AppCompatActivity() {
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 val triedPassword = binding.password.text.toString()
                 Log.d(TAG, "Trying a new password")
-                if (MasterPassword.isEqual(triedPassword)) {
+                if (Security.isMasterPassword(triedPassword)) {
                     Log.d(TAG, "Access granted")
                     binding.password.setText("")
-                    MasterPassword.set(triedPassword)
+                    Security.setMasterPassword(triedPassword)
                     val intent = Intent(this, FragmentContainer::class.java)
                     startActivity(intent)
                 } else {

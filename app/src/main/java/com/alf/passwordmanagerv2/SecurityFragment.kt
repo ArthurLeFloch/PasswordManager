@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alf.passwordmanagerv2.data.Account
+import com.alf.passwordmanagerv2.data.Security
 import com.alf.passwordmanagerv2.databinding.FragmentSecurityBinding
 import com.alf.passwordmanagerv2.utils.accountsToChange
 
@@ -33,7 +35,7 @@ class SecurityFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dataset = accountsToChange(days = daysBeforeReminder())
+        reloadDataset()
 
         binding.accounts.layoutManager = LinearLayoutManager(requireContext())
         binding.accounts.adapter = SecurityAccountAdapter(requireContext(), binding.root, dataset)
@@ -44,7 +46,8 @@ class SecurityFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
-        dataset = accountsToChange(days = daysBeforeReminder())
+        dataset =
+            accountsToChange(Security.getAccounts(), days = daysBeforeReminder()).toMutableList()
         updateVisibility()
         binding.accounts.adapter?.notifyDataSetChanged()
     }
@@ -60,6 +63,11 @@ class SecurityFragment : Fragment() {
         } else {
             binding.nothingToDo.visibility = View.GONE
         }
+    }
+
+    private fun reloadDataset() {
+        dataset =
+            accountsToChange(Security.getAccounts(), days = daysBeforeReminder()).toMutableList()
     }
 
 }

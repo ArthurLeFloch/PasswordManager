@@ -1,18 +1,6 @@
 package com.alf.passwordmanagerv2.utils
 
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.UUID
-
-fun bytesToStr(byteArray: ByteArray): String {
-    return byteArray.joinToString("") { String.format("%02x", it) }.uppercase()
-}
-
-fun strToBytes(string: String): ByteArray {
-    return string.chunked(2).map { it.toInt(16).toByte() }.toByteArray()
-}
 
 fun saveFields(fields: List<Pair<String, String>>, path: String) {
     val file = File(path)
@@ -37,10 +25,4 @@ fun findField(field: String, path: String): String? {
         }
     }
     return null
-}
-
-fun generateUniqueName(): String {
-    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-    val randomString = UUID.randomUUID().toString()
-    return "$timeStamp-$randomString"
 }

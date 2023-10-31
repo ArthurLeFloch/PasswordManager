@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.alf.passwordmanagerv2.data.Account
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 
@@ -18,13 +19,9 @@ class SecurityAccountAdapter(
     private val dataset: MutableList<Account>
 ) : RecyclerView.Adapter<SecurityAccountAdapter.ItemViewHolder>() {
 
-    private fun getRealAccountPosition(position: Int): Int {
-        return User.dataset.indexOf(dataset[position])
-    }
-
     private fun onEdit(position: Int): Boolean {
         val intent = Intent(context, EditAccountPassword::class.java)
-        intent.putExtra("id", getRealAccountPosition(position))
+        intent.putExtra("path", dataset[position].path)
         context.startActivity(intent)
         return true
     }
@@ -39,7 +36,7 @@ class SecurityAccountAdapter(
 
     private fun onView(position: Int) {
         val intent = Intent(context, ShowPassword::class.java)
-        intent.putExtra("id", getRealAccountPosition(position))
+        intent.putExtra("path", dataset[position].path)
         context.startActivity(intent)
     }
 

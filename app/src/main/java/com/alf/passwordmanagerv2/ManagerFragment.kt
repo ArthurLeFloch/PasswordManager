@@ -1,6 +1,5 @@
 package com.alf.passwordmanagerv2
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -23,8 +22,6 @@ class ManagerFragment : Fragment() {
 
     private lateinit var binding: FragmentManagerBinding
 
-    private var isFiltered: Boolean = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.title = getString(R.string.management_title)
@@ -43,7 +40,7 @@ class ManagerFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = AccountAdapter(requireContext(), binding.root)
 
-        binding.confirm.setOnClickListener { addData() }
+        binding.add.setOnClickListener { addData() }
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -61,8 +58,7 @@ class ManagerFragment : Fragment() {
 
                     override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
                         Log.d(TAG, "Search collapsed")
-                        (binding.recyclerView.adapter as AccountAdapter).removeFilter()
-                        isFiltered = false
+                        (binding.recyclerView.adapter as AccountAdapter).reloadDataset()
                         return true
                     }
                 })
@@ -75,7 +71,6 @@ class ManagerFragment : Fragment() {
 
                     override fun onQueryTextChange(newText: String?): Boolean {
                         (binding.recyclerView.adapter as AccountAdapter).addFilter(newText!!.trim())
-                        isFiltered = true
                         return true
                     }
                 })
@@ -88,14 +83,9 @@ class ManagerFragment : Fragment() {
 
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
-        if (isFiltered) {
-            (binding.recyclerView.adapter as AccountAdapter).removeFilter()
-            isFiltered = false
-        }
-        binding.recyclerView.adapter?.notifyDataSetChanged()
+        (binding.recyclerView.adapter as AccountAdapter).reloadDataset()
     }
 
     private fun addData() {

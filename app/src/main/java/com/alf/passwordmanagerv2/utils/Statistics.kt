@@ -3,9 +3,8 @@ package com.alf.passwordmanagerv2.utils
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Handler
-import com.alf.passwordmanagerv2.Account
 import com.alf.passwordmanagerv2.R
-import com.alf.passwordmanagerv2.User
+import com.alf.passwordmanagerv2.data.Account
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -67,8 +66,8 @@ private fun useCount(password: String): Int {
     return 0
 }
 
-fun accountsToChange(days: Int): MutableList<Account> {
-    val result = User.dataset.toMutableList()
+fun accountsToChange(accounts: List<Account>, days: Int): List<Account> {
+    val result = accounts.toMutableList()
     var i = 0
     val currentTime = Date().time
     val divider = 24 * 60 * 60 * 1000
