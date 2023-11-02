@@ -1,15 +1,19 @@
 package com.alf.passwordmanagerv2
 
 import android.os.Bundle
+import android.view.GestureDetector
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.alf.passwordmanagerv2.data.Account
 import com.alf.passwordmanagerv2.data.Security
 import com.alf.passwordmanagerv2.databinding.ActivityShowPasswordBinding
+import com.alf.passwordmanagerv2.utils.HorizontalSwipeListener
 
 class ShowPassword : AppCompatActivity() {
 
     private lateinit var binding: ActivityShowPasswordBinding
+    private lateinit var gestureDetector: GestureDetector
     private lateinit var account: Account
     private var charPerScreen: Int = 0
 
@@ -21,6 +25,11 @@ class ShowPassword : AppCompatActivity() {
         title = getString(R.string.password)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        gestureDetector = GestureDetector(
+            this,
+            HorizontalSwipeListener(onSwipeLeft = { onNext() }, onSwipeRight = { onPrevious() })
+        )
 
         binding = ActivityShowPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -37,21 +46,29 @@ class ShowPassword : AppCompatActivity() {
             PreferenceManager.getDefaultSharedPreferences(this).getInt("char_per_screen", 8)
         currentIndex = 0
 
-        binding.nextPart.setOnClickListener {
-            if (currentIndex < viewAmount() - 1) {
-                showNextPart()
-            } else {
-                finish()
-            }
-        }
+        binding.nextPart.setOnClickListener { onNext() }
 
-        binding.previousPart.setOnClickListener {
-            if (currentIndex > 0) {
-                showPreviousPart()
-            }
-        }
+        binding.previousPart.setOnClickListener { onPrevious() }
 
         updateAll()
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        return gestureDetector.onTouchEvent(event)
+    }
+
+    private fun onPrevious() {
+        if (currentIndex > 0) {
+            showPreviousPart()
+        }
+    }
+
+    private fun onNext() {
+        if (currentIndex < viewAmount() - 1) {
+            showNextPart()
+        } else {
+            finish()
+        }
     }
 
     private fun viewAmount(): Int {
